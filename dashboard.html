@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino IoT Dashboard Clone</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #eaf0f3;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+        }
+        .card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f5f7fa;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .card h3 {
+            margin: 0;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .card .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #222;
+        }
+        .toggle {
+            width: 60px;
+            height: 30px;
+            border-radius: 15px;
+            background-color: #ccc;
+            position: relative;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .toggle .circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: #fff;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+        .toggle.active {
+            background-color: #00a6a6;
+        }
+        .toggle.active .circle {
+            transform: translateX(30px);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="card" id="date-card">
+            <h3>Date</h3>
+            <div class="value" id="date">--:--:--</div>
+        </div>
+        <div class="card" id="show-card">
+            <h3>SHOW</h3>
+            <div class="value" id="show">0</div>
+        </div>
+        <div class="card" id="led-card">
+            <h3>LED</h3>
+            <div class="toggle" id="led-toggle">
+                <div class="circle"></div>
+            </div>
+        </div>
+        <div class="card" id="count-card">
+            <h3>Total Show Count Day</h3>
+            <div class="value" id="totalShowCountDay">0</div>
+        </div>
+    </div>
+
+    <script>
+        function updateDashboard() {
+            // Simulating data fetch from Arduino IoT Cloud
+            const data = {
+                date: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                show: Math.floor(Math.random() * 1000),
+                led: Math.random() > 0.5,
+                totalShowCountDay: Math.floor(Math.random() * 50)
+            };
+
+            document.getElementById('date').textContent = data.date;
+            document.getElementById('show').textContent = data.show;
+            document.getElementById('totalShowCountDay').textContent = data.totalShowCountDay;
+
+            const ledToggle = document.getElementById('led-toggle');
+            if (data.led) {
+                ledToggle.classList.add('active');
+            } else {
+                ledToggle.classList.remove('active');
+            }
+        }
+
+        // Update dashboard every second to mimic real-time updates
+        setInterval(updateDashboard, 1000);
+        updateDashboard();
+    </script>
+</body>
+</html>
